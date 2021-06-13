@@ -2,10 +2,10 @@ package readHtml
 
 import (
 	"fmt"
-	TimeToString "go_tour/timeToString"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	TimeToString "pdf_new_app/timeToString"
 	"strings"
 	"time"
 )
@@ -42,4 +42,3 @@ func Replace(path string, fi os.FileInfo, err error) error {
 	}
 	return nil
 }
-

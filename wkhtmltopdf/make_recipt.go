@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go_tour/readHtml"
 	"path/filepath"
+	"pdf_new_app/readHtml"
 )
 
 func main() {
@@ -41,4 +41,3 @@ func main() {
 	//
 	//
 }
-
