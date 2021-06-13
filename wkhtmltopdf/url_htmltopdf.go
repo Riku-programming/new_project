@@ -37,7 +37,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	p := "./test.html"
+	p := "./template.html"
 	page := wkhtmltopdf.NewPage(p)
 	page.UserStyleSheet.Set("./style.css")
 	pdfg.AddPage(page)
@@ -63,8 +63,8 @@ func main() {
 //	if err != nil {
 //		log.Fatal(err)
 //	}
-//	tmp1 := "./test.html"
-//	tmp2 := "./test.html"
+//	tmp1 := "./template.html"
+//	tmp2 := "./template.html"
 //	tmp3 := "./test3.html"
 //
 //	pdfg.AddPage(wkhtmltopdf.NewPage(tmp1))
