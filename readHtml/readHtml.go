@@ -21,7 +21,7 @@ func Replace(path string, fi os.FileInfo, err error) error {
 	if !!fi.IsDir() {
 		return nil //
 	}
-	matched, err := filepath.Match("test2.html", fi.Name())
+	matched, err := filepath.Match("test.html", fi.Name())
 	if err != nil {
 		panic(err)
 		return err
@@ -32,7 +32,7 @@ func Replace(path string, fi os.FileInfo, err error) error {
 			panic(err)
 		}
 		fmt.Println(path)
-		replacer := strings.NewReplacer("Hello", "Goodbye", "world", "earth", "date", TimeToString.TimeToString("01/02", time.Now()))
+		replacer := strings.NewReplacer("__NAME__", "Company", "__PRICE__", "5000", "__DATE__", TimeToString.TimeToString("01/02", time.Now()))
 		fmt.Println(replacer)
 		newContents := replacer.Replace(string(read))
 		err = ioutil.WriteFile(path, []byte(newContents), 0)
