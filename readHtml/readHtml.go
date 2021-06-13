@@ -10,8 +10,13 @@ import (
 	"time"
 )
 
+//fixme 以下の関数を切り分ける
 //Replacerで変換したいものをかえてる
 //Matchで変換したいファイルを指定してる
+const templateFilePath = "/Users/riku/go/src/pdf_new_app/template/template.html"
+const tmpFilePath = "/Users/riku/go/src/pdf_new_app/template/tmp.html"
+const resultFilePath = "/Users/riku/go/src/pdf_new_app/template/result.html"
+
 // todo 将来的にこれを内包した関数にしたい
 
 func Replace(path string, fi os.FileInfo, err error) error {
@@ -44,22 +49,22 @@ func Replace(path string, fi os.FileInfo, err error) error {
 }
 
 func CopyFile() {
-	//fixme 絶対パスを変更する
-	b, err := ioutil.ReadFile("/Users/riku/go/src/pdf_new_app/template/template.html")
+	b, err := ioutil.ReadFile(templateFilePath)
 	if err != nil {
+		fmt.Println(err)
 		panic(err)
 	}
-	err = ioutil.WriteFile("/Users/riku/go/src/pdf_new_app/template/tmp.html", b, 0644)
+	err = ioutil.WriteFile(tmpFilePath, b, 0644)
 	if err != nil {
 		panic(err)
 	}
 }
 
 func RenameTmpAndTemplate() {
-	if err := os.Rename("/Users/riku/go/src/pdf_new_app/template/template.html", "/Users/riku/go/src/pdf_new_app/template/result.html"); err != nil {
+	if err := os.Rename(templateFilePath, resultFilePath); err != nil {
 		fmt.Println(err)
 	}
-	if err := os.Rename("/Users/riku/go/src/pdf_new_app/template/tmp.html", "/Users/riku/go/src/pdf_new_app/template/template.html"); err != nil {
+	if err := os.Rename(tmpFilePath, templateFilePath); err != nil {
 		fmt.Println(err)
 	}
 }
