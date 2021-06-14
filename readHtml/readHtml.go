@@ -17,7 +17,7 @@ const templateFilePath = "/Users/riku/go/src/pdf_new_app/template/template.html"
 const tmpFilePath = "/Users/riku/go/src/pdf_new_app/template/tmp.html"
 const resultFilePath = "/Users/riku/go/src/pdf_new_app/template/result.html"
 
-// todo 将来的にこれを内包した関数にしたい
+// todo 将来的にReplacerを別関数に分けてユーザーが置換する文字列を選択できるようにしたい
 
 func Replace(path string, fi os.FileInfo, err error) error {
 	if err != nil {
@@ -37,7 +37,7 @@ func Replace(path string, fi os.FileInfo, err error) error {
 			panic(err)
 		}
 		CopyFile()
-		replacer := strings.NewReplacer("Hello", "Goodbye", "world", "5000", "date", TimeToString.TimeToString("01/02", time.Now()))
+		replacer := strings.NewReplacer("__NAME__", "TEST COMPANY", "__PRICE__", "5000", "__DATE__", TimeToString.TimeToString("01/02", time.Now()))
 		newContents := replacer.Replace(string(read))
 		err = ioutil.WriteFile(path, []byte(newContents), 0)
 		RenameTmpAndTemplate()
