@@ -9,6 +9,9 @@ import (
 	"strings"
 )
 
+const inputFilePath = "/Users/riku/go/src/pdf_new_app/template/result.html"
+const OutputFilePath = "./output-result.pdf"
+
 type templateData struct {
 	Datas []data
 }
@@ -24,8 +27,7 @@ func ConvertHtmlToPdf() {
 	datas = append(datas, data{Name: "AK47", Cal: "7.62"})
 	datas = append(datas, data{Name: "MP5", Cal: "9.00"})
 	tmplData := templateData{Datas: datas}
-
-	t := template.Must(template.ParseFiles("/Users/riku/go/src/pdf_new_app/template/result.html"))
+	t := template.Must(template.ParseFiles(inputFilePath))
 
 	var tpl bytes.Buffer
 	if err := t.Execute(&tpl, tmplData); err != nil {
@@ -51,7 +53,7 @@ func ConvertHtmlToPdf() {
 		log.Fatal(err)
 	}
 
-	err = pdfgFromJSON.WriteFile("./output-result.pdf")
+	err = pdfgFromJSON.WriteFile(OutputFilePath)
 	if err != nil {
 		log.Fatal(err)
 	}
