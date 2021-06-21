@@ -14,7 +14,7 @@ import (
 //Replacerで変換したいものをかえてる
 //Matchで変換したいファイルを指定してる
 const templateFilePath = "/Users/riku/go/src/pdf_new_app/template/template.html"
-const tmpFilePath = "/Users/riku/go/src/pdf_new_app/template/tmp.html"
+const tmpFilePath = "/Users/riku/go/src/pdf_new_app/template/readCsv.html"
 const resultFilePath = "/Users/riku/go/src/pdf_new_app/template/result.html"
 const openCSVPath = "/Users/riku/go/src/pdf_new_app/readCsv/addresses.csv"
 
