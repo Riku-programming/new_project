@@ -1,27 +1,32 @@
-package ReadCsv
+package main
 
 import (
-	"encoding/csv"
 	"fmt"
-	"os"
+	"github.com/jszwec/csvutil"
+	"io/ioutil"
 )
 
-func ReadCsv(filename string) {
-	file, err := os.Open(filename)
+func main() {
+	var csvInput = useIoutilReadFile("/Users/riku/go/src/pdf_new_app/readCsv/addresses.csv")
+
+	type User struct {
+		Name string `csv:"name"`
+		Age  int    `csv:"age,omitempty"`
+		//CreatedAt time.Time
+	}
+
+	var users []User
+	if err := csvutil.Unmarshal(csvInput, &users); err != nil {
+		fmt.Println("error:", err)
+	}
+
+	fmt.Println(users[0].Age)
+}
+func useIoutilReadFile(fileName string) []byte {
+	bytes, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		panic(err)
 	}
-	defer file.Close()
 
-	reader := csv.NewReader(file)
-	var line []string
-
-	for {
-		line, err = reader.Read()
-		if err != nil {
-			break
-		}
-		fmt.Println(line)
-	}
-	// fixme  配列にlineを格納してindex[0][0]みたいな感じにした方が良さそう
+	return bytes
 }
