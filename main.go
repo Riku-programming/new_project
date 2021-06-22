@@ -3,7 +3,6 @@ package main
 import (
 	"path/filepath"
 	"pdf_new_app/convertHtmlToPdf"
-	"pdf_new_app/csvArray"
 	"pdf_new_app/readHtml"
 )
 
@@ -15,8 +14,9 @@ const templatePath = "/Users/riku/go/src/pdf_new_app/template"
 const openCSVPath = "/Users/riku/go/src/pdf_new_app/readCsv/addresses.csv"
 
 func main() {
-	CsvArray.CsvArray(openCSVPath)
+	//CsvArray.CsvArray(openCSVPath)
 	err := filepath.Walk(templatePath, readHtml.Replace)
+	//err := filepath.Walk(templatePath, readHtml.Replace(templatePath, "aaa", nil, name, age))
 	if err != nil {
 		panic(err)
 	}

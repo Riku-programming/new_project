@@ -5,9 +5,9 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	TimeToString "pdf_new_app/timeToString"
+	readCsvToObject "pdf_new_app/readCsv"
+	"strconv"
 	"strings"
-	"time"
 )
 
 //fixme 以下の関数を切り分ける
@@ -21,6 +21,9 @@ const openCSVPath = "/Users/riku/go/src/pdf_new_app/readCsv/addresses.csv"
 // todo 将来的にReplacerを別関数に分けてユーザーが置換する文字列を選択できるようにしたい
 
 func Replace(path string, fi os.FileInfo, err error) error {
+	name := readCsvToObject.Number(0).Name
+	priceInt := readCsvToObject.Number(0).Price
+	price := strconv.Itoa(priceInt)
 	if err != nil {
 		return err
 	}
@@ -33,20 +36,31 @@ func Replace(path string, fi os.FileInfo, err error) error {
 		return err
 	}
 	if matched {
-		read, err := ioutil.ReadFile(path)
-		if err != nil {
-			panic(err)
-		}
-		CopyFile()
-		replacer := strings.NewReplacer("__NAME__", "AXLBIT", "__PRICE__", "5000", "__DATE__", TimeToString.TimeToString("01/02", time.Now()))
-		newContents := replacer.Replace(string(read))
-		err = ioutil.WriteFile(path, []byte(newContents), 0)
-		RenameTmpAndTemplate()
-		if err != nil {
-			panic(err)
-		}
+		ReplaceToHtml(path, name, price)
 	}
 	return nil
+}
+
+// todo  goalはreplace("old_name, new_name, old_age, new_age)
+//replacer は外で定義したい
+
+func SelectReplaceWord(companyNameArea string, companyName string, priceArea string, price string) *strings.Replacer {
+	return strings.NewReplacer(companyNameArea, companyName, priceArea, price)
+}
+
+func ReplaceToHtml(path string, name string, price string) {
+	read, err := ioutil.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+	CopyFile()
+	replacer := SelectReplaceWord("__NAME__", name, "__PRICE__", price)
+	newContents := replacer.Replace(string(read))
+	err = ioutil.WriteFile(path, []byte(newContents), 0)
+	RenameTmpAndTemplate()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func CopyFile() {
