@@ -22,6 +22,15 @@ func Number(number int) User {
 	return users[number]
 }
 
+func NumberOfLine() int {
+	var csvInput = useIoutilReadFile("/Users/riku/go/src/pdf_new_app/readCsv/addresses.csv")
+	var users []User
+	if err := csvutil.Unmarshal(csvInput, &users); err != nil {
+		fmt.Println("error:", err)
+	}
+	return len(users)
+}
+
 func useIoutilReadFile(fileName string) []byte {
 	bytes, err := ioutil.ReadFile(fileName)
 	if err != nil {

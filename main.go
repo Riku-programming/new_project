@@ -14,5 +14,4 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//ConvertHtmlToPdf.ConvertHtmlToPdf(inputFilePath)
 }

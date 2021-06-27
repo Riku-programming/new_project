@@ -17,6 +17,7 @@ import (
 const templateFilePath = "/Users/riku/go/src/pdf_new_app/template/template.html"
 const tmpFilePath = "/Users/riku/go/src/pdf_new_app/template/readCsv.html"
 const resultFilePath = "/Users/riku/go/src/pdf_new_app/template/result.html"
+const OutputFilePath = "./output-result"
 const openCSVPath = "/Users/riku/go/src/pdf_new_app/readCsv/addresses.csv"
 
 // todo 将来的にReplacerを別関数に分けてユーザーが置換する文字列を選択できるようにしたい
@@ -25,25 +26,29 @@ const openCSVPath = "/Users/riku/go/src/pdf_new_app/readCsv/addresses.csv"
 //Replace関数の形式はいじれないためnumberで指定しているところをforで回す
 
 func Replace(templatePath string, fi os.FileInfo, err error) error {
-	name := readCsvToObject.Number(1).Name
-	priceInt := readCsvToObject.Number(1).Price
-	price := strconv.Itoa(priceInt)
-	if err != nil {
-		return err
+	for i := 0; i < readCsvToObject.NumberOfLine(); i++ {
+		name := readCsvToObject.Number(i).Name
+		priceInt := readCsvToObject.Number(i).Price
+		price := strconv.Itoa(priceInt)
+		if err != nil {
+			return err
+		}
+		if !!fi.IsDir() {
+			return nil //
+		}
+		matched, err := filepath.Match("template.html", fi.Name())
+		if err != nil {
+			panic(err)
+			return err
+		}
+		if matched {
+			ReplaceToHtml(templatePath, name, price)
+			//xxx for分で回して一枚ずつpdfを作るためにPdfにする処理をここに入れた
+			ConvertHtmlToPdf.ConvertHtmlToPdf(resultFilePath, OutputFilePath+strconv.Itoa(i)+".pdf")
+			fmt.Println(strconv.Itoa(i))
+		}
 	}
-	if !!fi.IsDir() {
-		return nil //
-	}
-	matched, err := filepath.Match("template.html", fi.Name())
-	if err != nil {
-		panic(err)
-		return err
-	}
-	if matched {
-		ReplaceToHtml(templatePath, name, price)
-		//xxx for分で回して一枚ずつpdfを作るためにPdfにする処理をここに入れた
-		ConvertHtmlToPdf.ConvertHtmlToPdf(resultFilePath)
-	}
+
 	return nil
 }
 

@@ -9,8 +9,6 @@ import (
 	"strings"
 )
 
-const OutputFilePath = "./output-result.pdf"
-
 type templateData struct {
 	Datas []data
 }
@@ -20,7 +18,7 @@ type data struct {
 	Cal  string
 }
 
-func ConvertHtmlToPdf(inputFilePath string) {
+func ConvertHtmlToPdf(inputFilePath string, outputFilePath string) {
 	datas := make([]data, 0)
 	datas = append(datas, data{Name: "M16", Cal: "5.56"})
 	datas = append(datas, data{Name: "AK47", Cal: "7.62"})
@@ -52,7 +50,7 @@ func ConvertHtmlToPdf(inputFilePath string) {
 		log.Fatal(err)
 	}
 
-	err = pdfgFromJSON.WriteFile(OutputFilePath)
+	err = pdfgFromJSON.WriteFile(outputFilePath)
 	if err != nil {
 		log.Fatal(err)
 	}
