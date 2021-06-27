@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	ConvertHtmlToPdf "pdf_new_app/convertHtmlToPdf"
 	readCsvToObject "pdf_new_app/readCsv"
 	"strconv"
 	"strings"
@@ -20,9 +21,12 @@ const openCSVPath = "/Users/riku/go/src/pdf_new_app/readCsv/addresses.csv"
 
 // todo 将来的にReplacerを別関数に分けてユーザーが置換する文字列を選択できるようにしたい
 
-func Replace(path string, fi os.FileInfo, err error) error {
-	name := readCsvToObject.Number(0).Name
-	priceInt := readCsvToObject.Number(0).Price
+//CsvをObjectにしたものを読み込んでそれをhtmlテンプレートに流し込み変換したものをmain関数に流す関数
+//Replace関数の形式はいじれないためnumberで指定しているところをforで回す
+
+func Replace(templatePath string, fi os.FileInfo, err error) error {
+	name := readCsvToObject.Number(1).Name
+	priceInt := readCsvToObject.Number(1).Price
 	price := strconv.Itoa(priceInt)
 	if err != nil {
 		return err
@@ -36,27 +40,24 @@ func Replace(path string, fi os.FileInfo, err error) error {
 		return err
 	}
 	if matched {
-		ReplaceToHtml(path, name, price)
+		ReplaceToHtml(templatePath, name, price)
+		//xxx for分で回して一枚ずつpdfを作るためにPdfにする処理をここに入れた
+		ConvertHtmlToPdf.ConvertHtmlToPdf(resultFilePath)
 	}
 	return nil
 }
 
 // todo  goalはreplace("old_name, new_name, old_age, new_age)
-//replacer は外で定義したい
 
-func SelectReplaceWord(companyNameArea string, companyName string, priceArea string, price string) *strings.Replacer {
-	return strings.NewReplacer(companyNameArea, companyName, priceArea, price)
-}
-
-func ReplaceToHtml(path string, name string, price string) {
-	read, err := ioutil.ReadFile(path)
+func ReplaceToHtml(templatePath string, name string, price string) {
+	read, err := ioutil.ReadFile(templatePath)
 	if err != nil {
 		panic(err)
 	}
 	CopyFile()
 	replacer := SelectReplaceWord("__NAME__", name, "__PRICE__", price)
 	newContents := replacer.Replace(string(read))
-	err = ioutil.WriteFile(path, []byte(newContents), 0)
+	err = ioutil.WriteFile(templatePath, []byte(newContents), 0)
 	RenameTmpAndTemplate()
 	if err != nil {
 		panic(err)
@@ -82,4 +83,7 @@ func RenameTmpAndTemplate() {
 	if err := os.Rename(tmpFilePath, templateFilePath); err != nil {
 		fmt.Println(err)
 	}
+}
+func SelectReplaceWord(companyNameArea string, companyName string, priceArea string, price string) *strings.Replacer {
+	return strings.NewReplacer(companyNameArea, companyName, priceArea, price)
 }

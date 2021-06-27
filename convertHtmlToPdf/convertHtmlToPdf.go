@@ -9,7 +9,6 @@ import (
 	"strings"
 )
 
-const inputFilePath = "/Users/riku/go/src/pdf_new_app/template/result.html"
 const OutputFilePath = "./output-result.pdf"
 
 type templateData struct {
@@ -21,7 +20,7 @@ type data struct {
 	Cal  string
 }
 
-func ConvertHtmlToPdf() {
+func ConvertHtmlToPdf(inputFilePath string) {
 	datas := make([]data, 0)
 	datas = append(datas, data{Name: "M16", Cal: "5.56"})
 	datas = append(datas, data{Name: "AK47", Cal: "7.62"})
